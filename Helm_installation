@@ -1,0 +1,19 @@
+
+helm installation on windows
+
+Reference: 
+https://github.com/helm/helm/releases
+
+Dowload it to local directory:
+$wget https://get.helm.sh/helm-v3.8.2-windows-amd64.zip
+
+Unzip the downloaded zip file:
+$unzip helm-v3.8.2-windows-amd64.zip
+
+then move the executable file to /usr/local/bin
+mv /tmp/windows-amd64/helm /usr/local/bin
+
+Then run basic helm command to verify helm installation:
+$helm version
+
+

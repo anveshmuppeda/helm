@@ -1,0 +1,16 @@
+
+
+reference:
+https://pkg.go.dev/text/template
+
+If Values.yaml file looks like:
+
+image:
+  repository: bitnami/jenkins
+  tag: latest
+
+Then our template section syntax become
+{{ Values.image.repository }}:{{ Values.image.tag }}
+
+Which means
+bitnami/jenkins:latest

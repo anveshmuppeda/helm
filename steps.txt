@@ -1,0 +1,50 @@
+================================================
+helm installation on windows
+https://github.com/helm/helm/releases
+$wget https://get.helm.sh/helm-v3.8.2-windows-amd64.zip
+$unzip helm-v3.8.2-windows-amd64.zip
+then move the executable file to /usr/local/bin
+mv /tmp/windows-amd64/helm /usr/local/bin
+================================================
+
+
+https://hub.kubeapps.com/charts?q-blog
+
+to add new repo into your helm
+$helm repo add bitnami https://charts.bitnami.com/bitnami
+
+to list repos in your helm
+$ helm repo list
+
+to update the current repos in your helm
+$helm repo update
+
+to install the above repo use below command
+$helm install my-release bitnami/drupal
+
+To search any repo 
+$helm search repo bitnami/rabbitmq -l
+helm search repo bitnami -l
+
+to install any specific version of a chart
+$helm install <your-entity-name> bitnami/rabbitmq --version 6.18.3 
+$helm install anvesh-rabbit bitnami/prometheus-operator --version 0.20.5 -n anvesh
+
+to read the helm chart
+$helm show readme bitnami/rabbitmq --version 6.18.3
+
+$helm show readme bitnami/rabbitmq --version 6.18.3 | marked | bcat
+
+
+To check our helm chart status
+$ helm status anvesh-rabbit -n anvesh
+
+To update the number of the replicas count to our own release
+$helm upgrade <nameof-release> bitnami/rabbitmq --version 6.18.3 --set replicas=3 --set rabbitmq.password=<pwd> --ser rabbitmq.erlangCookie=<cookie>
+
+To uninstall our charts(releases)
+$helm uninstall <name-of-release>
+
+
+To get the structure of the helm
+$tree helm

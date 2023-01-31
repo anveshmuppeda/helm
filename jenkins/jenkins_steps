@@ -1,0 +1,45 @@
+to create a own helm chart
+$helm create <chart-name>
+$helm create jenkins-chart
+
+
+
+Change the version of the jenkins in Chart.yaml inorder to pick the version from the repo list
+from 1.16.0 to 2.232.3
+
+Now remove the yaml files and test files under <chart-name>/templates/
+$rm -rf <chart-name>/templates/*.yaml <chart-name>/templates/tests
+
+Now copy your deployments into <chart-name>/templates/ directory
+
+To create your own release from your own chat 
+$helm install <release-name> <chart-name>
+$helm install jenkins-release jenkins-chart
+
+Now check your deployments in proper namespaces
+
+Now port forward the pod traffic to localhost
+$kubectl --namespace <namespace> port-forward <pod-name> 30080:8080
+$kubectl --namespace default port-forward jenkins-754c45c4b8-gqqhz 30080:8080
+
+Then you can access your jenkins using below URL
+http://127.0.0.1:30080
+
+Username: test
+Password: bitnami
+
+To list release names:
+$helm list -a
+
+To upgrade existing release
+$helm upgrade newman man --set replicaCount=3 -n anvesh
+
+To view the template syntax
+$helm template RELEASENAME .
+
+individual template 
+$helm template RELEASENAME . -s templates/jenkins-deployment.yaml
+
+Reference for templates:
+godoc.org/text/template
+https://pkg.go.dev/text/template
