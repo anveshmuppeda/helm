@@ -3,6 +3,10 @@ To list the release names
 $helm list -a
 $ helm list -a -n anvesh
 
+List the repos
+$helm repo list [flags]
+
+
 To add new repo into your helm
 $helm repo add bitnami https://charts.bitnami.com/bitnami
 $helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
