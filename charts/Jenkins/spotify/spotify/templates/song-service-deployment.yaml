@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-song-service
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-song-service
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-song-service
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-song-service
+        image: {{ .Values.image.song.repository }}:{{ .Values.image.song.tag }}
+        ports:
+        - containerPort: {{ .Values.container.song.port }}
+        env:
+        - name: {{ .Values.container.song.env.name1 }}
+          value: "{{ .Values.container.song.env.value1 }}"
+        - name: {{ .Values.container.song.env.name2 }}
+          value: "{{ .Values.container.song.env.value2 }}"
+        - name: {{ .Values.container.song.env.name3 }}
+          value: "{{ .Values.container.song.env.value3 }}"
+        - name: {{ .Values.container.song.env.name4 }}
+          value: "{{ .Values.container.song.env.value4 }}"

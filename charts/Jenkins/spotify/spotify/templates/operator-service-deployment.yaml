@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-operator-service-deployment
+  labels:
+    app: {{ .Release.Name }}-operator-service
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-operator-service
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-operator-service
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-operator-service
+        image: {{ .Values.image.operator.repository }}:{{ .Values.image.operator.tag }}
+        ports:
+        - containerPort: {{ .Values.container.operator.port }}
+        env:
+        - name: {{ .Values.container.operator.env.name1 }}
+          value: "{{ .Values.container.operator.env.value1 }}"
+        - name: {{ .Values.container.operator.env.name2 }}
+          value: "{{ .Values.container.operator.env.value2 }}"
+        - name: {{ .Values.container.operator.env.name3 }}
+          value: "{{ .Values.container.operator.env.value3 }}"

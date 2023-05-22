@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-mongodb
+spec:
+  serviceName: mongodb
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-mongodb
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-mongodb
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-mongodb
+        image: {{ .Values.image.mango.repository }}:{{ .Values.image.mango.tag }}
+        ports:
+        - containerPort: {{.Values.container.mango.port }}
+          name: mongodb
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-data
+    spec:
+      accessModes: [ "{{ .Values.volume.mango.accessmodes }}" ]
+      resources:
+        requests:
+          storage: {{ .Values.volume.mango.storage }}

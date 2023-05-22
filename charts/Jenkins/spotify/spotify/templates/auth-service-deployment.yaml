@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-auth-service
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-auth-service
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-auth-service
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-auth-service
+          image: {{ .Values.image.auth.repository }}:{{ .Values.image.auth.tag }}
+          ports:
+            - containerPort: {{ .Values.container.auth.port }}
+          env:
+            - name: {{ .Values.container.auth.env.name1 }}
+              value: "{{ .Values.container.auth.env.value1 }}"
+            - name: {{ .Values.container.auth.env.name2 }}
+              value: "{{ .Values.container.auth.env.value2 }}"
+            - name: {{ .Values.container.auth.env.name3 }}
+              value: "{{ .Values.container.auth.env.value3 }}"
+            - name: {{ .Values.container.auth.env.name4 }}
+              value: "{{ .Values.container.auth.env.value4 }}"
+            - name: {{ .Values.container.auth.env.name5 }}
+              value: "{{ .Values.container.auth.env.value5 }}"

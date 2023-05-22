@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-media-service
+spec:
+  selector:
+    app: {{ .Release.Name }}-media-service
+  ports:
+    - protocol: TCP
+      port: {{ .Values.service.auth.ports.port }}
+      targetPort: {{ .Values.service.auth.ports.targetport }}
+  type: {{ .Values.service.auth.type }}

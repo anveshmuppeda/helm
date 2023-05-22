@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-web-central
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-web-central
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-web-central
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-web-central
+          image: {{ .Values.image.web.repository }}:{{ .Values.image.web.tag }}
+          ports:
+            - containerPort: {{ .Values.container.auth.port }}
+          env:
+            - name: {{ .Values.container.web.env.name1 }}
+              value: "{{ .Values.container.web.env.value1 }}"
+            - name: {{ .Values.container.web.env.name2 }}
+              value: "{{ .Values.container.web.env.value2 }}"
+            - name: {{ .Values.container.web.env.name3 }}
+              value: "{{ .Values.container.web.env.value3 }}"
+            - name: {{ .Values.container.web.env.name4 }}
+              value: "{{ .Values.container.web.env.value4 }}"
+            - name: {{ .Values.container.web.env.name5 }}
+              value: "{{ .Values.container.web.env.value5 }}"
+            - name: {{ .Values.container.web.env.name6 }}
+              value: "{{ .Values.container.web.env.value6 }}"
+            - name: {{ .Values.container.web.env.name7 }}
+              value: "{{ .Values.container.web.env.value7 }}"

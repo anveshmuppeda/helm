@@ -1,0 +1,124 @@
+# Default values for spotify.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  auth:
+    repository: localhost:5000/dethrone-auth
+    tag: latest
+  media:
+    repository: localhost:5000/dethrone-media
+    tag: latest
+  mango:
+    repository: localhost:5000/mongo
+    tag: latest
+  operator:
+    repository: localhost:5000/dethrone-operator
+    tag: latest
+  song:
+    repository: localhost:5000/dethrone-song
+    tag: latest
+  web:
+    repository: localhost:5000/dethrone-web
+    tag: latest
+
+container:
+  auth:
+    port: 3000
+    env:
+      name1: PORT
+      value1: 3000
+      name2: HOST
+      value2: 0.0.0.0
+      name3: DB_CONNECTION_URL
+      value3: mongodb://mongodb/auth
+      name4: SROUNDS
+      value4: 10
+      name5: JWT_SECRET_KEY
+      value5: okxUuOsWwtZaBf7ZCdojxC79OfddgXEMwDUSWgVNuNi2OsdpRSxZOxymS04hsKVG
+  media:
+    port: 3005
+    env:
+      name1: PORT
+      value1: 3005
+      name3: JWT_SECRET_KEY
+      value3: okxUuOsWwtZaBf7ZCdojxC79OfddgXEMwDUSWgVNuNi2OsdpRSxZOxymS04hsKVG
+      name2: DB_CONNECTION_URL
+      value2: mongodb://mongodb/media
+  mango:
+    port: 27017
+  operator:
+    port: 3002
+    env:
+      name1: PORT
+      value1: 3002
+      name2: SONG_SERVICE_API_URL
+      value2: http://song-service:3001
+      name3: JWT_SECRET_KEY
+      value3: okxUuOsWwtZaBf7ZCdojxC79OfddgXEMwDUSWgVNuNi2OsdpRSxZOxymS04hsKVG
+  song:
+    port: 3001
+    env:
+      name1: PORT
+      value1: 3001
+      name2: DB_CONNECTION_URL
+      value2: mongodb://mongodb/song-service
+      name3: SROUNDS
+      value3: 10
+      name4: JWT_SECRET_KEY
+      value4: okxUuOsWwtZaBf7ZCdojxC79OfddgXEMwDUSWgVNuNi2OsdpRSxZOxymS04hsKVG
+  web:
+    port: 3004
+    env:
+      name1: AUTH_SERVICE_API_URL
+      value1: http://auth-service:3000
+      name2: OPERATOR_SERVICE_API_URL
+      value2: http://operator-service:3002
+      name3: MEDIA_SERVICE_API_URL
+      value3: http://media-service:3005
+      name4: LOGIN_END_POINT
+      value4: /login
+      name5: SESSION_SECRET
+      value5: 2b34d40d0534ec483c7ee39ac6f9b77c6a02cdcdda739994112f83c6b50a5676
+      name6: PORT
+      value6: 3004
+      name7: JWT_SECRET_KEY
+      value7: okxUuOsWwtZaBf7ZCdojxC79OfddgXEMwDUSWgVNuNi2OsdpRSxZOxymS04hsKVG
+
+service:
+  auth:
+    ports:
+      port: 3000
+      targetport: 3000
+    type: LoadBalancer
+  media:
+    ports:
+      port: 3005
+      targetport: 3005
+    type: LoadBalancer
+  mango:
+    ports:
+      port: 27017
+      targetport: 27017
+  operator:
+    ports:
+      port: 3002
+      targetport: 3002
+    type: LoadBalancer
+  song:
+    ports:
+      port: 3001
+      targetport: 3001
+    type: LoadBalancer
+  web:
+    ports:
+      port: 3004
+      targetport: 3004
+    type: LoadBalancer
+
+volume:
+  mango:
+    accessmodes: "ReadWriteOnce"
+    storage: 10Gi

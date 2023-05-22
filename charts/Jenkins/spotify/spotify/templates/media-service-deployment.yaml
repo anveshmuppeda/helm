@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-media-service
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-media-service
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-media-service
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-media-service
+        image: {{ .Values.image.media.repository }}:{{ .Values.image.media.tag }}
+        ports:
+        - containerPort: {{ .Values.container.media.port }}
+        env:
+        - name: {{ .Values.container.media.env.name1 }}
+          value: "{{ .Values.container.media.env.value1 }}"
+        - name: {{ .Values.container.media.env.name2 }}
+          value: "{{ .Values.container.media.env.value2 }}"
+        - name: {{ .Values.container.media.env.name3 }}
+          value: "{{ .Values.container.media.env.value3 }}"
