@@ -46,4 +46,54 @@ As you can see, the deployment YAML files are part of the template directory (hi
 7. templates/_helpers.tpl: That file contains several methods, and sub-template. These files are not rendered to Kubernetes object definitions but are available everywhere within other chart templates for use. 
 8. templates/tests/: We can define tests in our charts to validate that your chart works as expected when it is installed. 
 
+## Create Helm Chart From Scratch  
+To get hands-on with helm chart creation, let’s create an Nginx helm chart from scratch.  
 
+Execute the following command to create the chart boilerplate. It creates a chart with the name nginx-chart with default files and folders.  
+```
+helm create nginx-chart
+```
+If you check the created chart, it will have the following files and directories.
+```
+nginx-chart
+│   ├── Chart.yaml
+│   ├── charts
+│   ├── templates
+│   │   ├── NOTES.txt
+│   │   ├── _helpers.tpl
+│   │   ├── deployment.yaml
+│   │   ├── hpa.yaml
+│   │   ├── ingress.yaml
+│   │   ├── service.yaml
+│   │   ├── serviceaccount.yaml
+│   │   └── tests
+│   │       └── test-connection.yaml
+│   └── values.yaml
+```
+Let’s cd into the generated chart directory.
+```
+cd nginx-chart
+```
+We’ll edit the files one by one according to our deployment requirements.
+```
+Chart.yaml
+```
+As mentioned above, we put the details of our chart in Chart.yaml file. Replace the default contents of chart.yaml with the following.
+```
+apiVersion: v2
+name: nginx-chart
+description: My First Helm Chart
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+- email: contact@devopscube.com
+  name: devopscube
+```
+1. apiVersion: This denotes the chart API version. v2 is for Helm 3 and v1 is for previous versions.
+2. name: Denotes the name of the chart.
+3. description: Denotes the description of the helm chart.
+4. Type: The chart type can be either ‘application’ or ‘library’. Application charts are what you deploy on Kubernetes. Library charts are re-usable charts that can be used with other charts. A similar concept of libraries in programming.
+5. Version: This denotes the chart version. 
+6. appVersion: This denotes the version number of our application (Nginx). 
+7. maintainers: Information about the owner of the chart.
