@@ -86,16 +86,16 @@ type: application
 version: 0.1.0
 appVersion: "1.0.0"
 maintainers:
-- email: contact@devopscube.com
-  name: devopscube
+- email: contact@domain.com
+  name: domain
 ```
-1. apiVersion: This denotes the chart API version. v2 is for Helm 3 and v1 is for previous versions.
-2. name: Denotes the name of the chart.
-3. description: Denotes the description of the helm chart.
-4. Type: The chart type can be either ‘application’ or ‘library’. Application charts are what you deploy on Kubernetes. Library charts are re-usable charts that can be used with other charts. A similar concept of libraries in programming.
-5. Version: This denotes the chart version. 
-6. appVersion: This denotes the version number of our application (Nginx). 
-7. maintainers: Information about the owner of the chart.
+1. **apiVersion**: This denotes the chart API version. v2 is for Helm 3 and v1 is for previous versions.
+2. **name**: Denotes the name of the chart.
+3. **description**: Denotes the description of the helm chart.
+4. **Type**: The chart type can be either ‘application’ or ‘library’. Application charts are what you deploy on Kubernetes. Library charts are re-usable charts that can be used with other charts. A similar concept of libraries in programming.
+5. **Version**: This denotes the chart version. 
+6. **appVersion**: This denotes the version number of our application (Nginx). 
+7. **maintainers**: Information about the owner of the chart.
 
 ## templates
 There are multiple files in templates directory created by helm. In our case, we will work on simple Kubernetes Nginx deployment.  
@@ -127,7 +127,6 @@ spec:
       containers:
         - name: nginx
           image: "nginx:1.16.0"
-          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 80
@@ -141,11 +140,11 @@ To template a value, all you need to do is add the object parameter inside curly
 ```
 First Let’s understand what is an Object. Following are the three Objects we are going to use in this example.
 
-1. Release: Every helm chart will be deployed with a release name. If you want to use the release name or access release-related dynamic values inside the template, you can use the release object.
-2. Chart: If you want to use any values you mentioned in the chart.yaml, you can use the chart object.
-3. Values: All parameters inside values.yaml file can be accessed using the Values object.
+1. **Release**: Every helm chart will be deployed with a release name. If you want to use the release name or access release-related dynamic values inside the template, you can use the release object.
+2. **Chart**: If you want to use any values you mentioned in the chart.yaml, you can use the chart object.
+3. **Values**: All parameters inside values.yaml file can be accessed using the Values object.
 
-First, you need to figure out what values could change or what you want to templatize. I am choosing name, replicas, container name, image and imagePullPolicy which I have highlighter in the YAML file in bold. 
+First, you need to figure out what values could change or what you want to templatize. I am choosing name, replicas, container name, and image.
 
 1. name: name: {{ .Release.Name }}-nginx : We need to change the deployment name every time as Helm does not allow us to install releases with the same name. So we will templatize the name of the deployment with the release name and interpolate -nginx along with it. Now if we create a release using the name frontend, the deployment name will be frontend-nginx. This way, we will have guaranteed unique names.
 2. container name: {{ .Chart.Name }}: For the container name, we will use the Chart object and use the chart name from the chart.yaml as the container name.
@@ -181,7 +180,9 @@ spec:
               containerPort: 80
               protocol: TCP
 ```
+
 Create service.yaml file and copy the following contents.
+
 ```yaml
 apiVersion: v1
 kind: Service
@@ -196,9 +197,11 @@ spec:
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
 ```
-In the protocol template directive, you can see a pipe ( | ) . It is used to define the default value of the protocol as TCP. So that means we won’t define the protocol value in values.yaml file or if it is empty, it will take TCP as a value for protocol.  
 
-Create a configmap.yaml and add the following contents to it. Here we are replacing the default Nginx index.html page with a custom HTML page. Also, we added a template directive to replace the environment name in HTML.  
+> **_NOTE:_** In the protocol template directive, you can see a pipe ( | ) . It is used to define the default value of the protocol as TCP. So that means we won’t define the protocol value in values.yaml file or if it is empty, it will take TCP as a value for protocol.  
+
+Create a **configmap.yaml** and add the following contents to it. Here we are replacing the default Nginx index.html page with a custom HTML page. Also, we added a template directive to replace the environment name in HTML.  
+
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -213,6 +216,7 @@ data:
     <h1>Hi! I got deployed in {{ .Values.env.name }} Environment using Helm Chart </h1>
     </html>
 ```
+
 ## values.yaml
 The values.yaml file contains all the values that need to be substituted in the template directives we used in the templates. For example, deployment.yaml template contains template directive to get the image repository, tag, and pullPolicy from the values.yaml file. If you check the following values.yaml file, we have repository, tag, and pullPolicy key-value pairs nested under the image key. That is the reason we used Values.image.repository  
 
@@ -234,6 +238,7 @@ service:
 env:
   name: dev
 ```
+
 Now we have the Nginx helm chart ready and the final helm chart structure looks like the following.
 ```yaml
 nginx-chart
@@ -247,40 +252,46 @@ nginx-chart
 ```
 
 ## Validate the Helm Chart
+
 Now to make sure that our chart is valid and, all the indentations are fine, we can run the below command. Ensure you are inside the chart directory.  
-```
+```shell
 helm lint .
-```
-If you are executing it from outside the nginx-chart directory, provide the full path of nginx-chart  
-```
+``` 
+
+If you are executing it from outside the nginx-chart directory, provide the full path of nginx-chart   
+```shell
 helm lint /path/to/nginx-chart
 ```
-If there will be no error or issue, it will show this result
+
+If there will be no error or issue, it will show this result  
 ```
 ==> Linting ./nginx
 [INFO] Chart.yaml: icon is recommended
 
 1 chart(s) linted, 0 chart(s) failed
 ```
-To validate if the values are getting substituted in the templates, you can render the templated YAML files with the values using the following command. It will generate and display all the manifest files with the substituted values.
-```
+
+To validate if the values are getting substituted in the templates, you can render the templated YAML files with the values using the following command. It will generate and display all the manifest files with the substituted values. 
+```shell
 helm template .
 ```
-We can also use --dry-run command to check. This will pretend to install the chart to the cluster and if there will be some issue it will show the error.  
-```
+
+We can also use ** --dry-run** command to check. This will pretend to install the chart to the cluster and if there will be some issue it will show the error.  
+```shell
 helm install --dry-run my-release nginx-chart
 ```
 If everything is good, then you will see the manifest output that would get deployed into the cluster.   
 
-## Deploy the Helm Chart
-When you deploy the chart, Helm will read the chart and configuration values from the values.yaml file and generates the manifest files. Then it will send these files to the Kubernetes API server, and Kubernetes will create the requested resources in the cluster.   
+## Deploy the Helm Chart  
+When you deploy the chart, Helm will read the chart and configuration values from the values.yaml file and generates the manifest files. Then it will send these files to the Kubernetes API server, and Kubernetes will create the requested resources in the cluster.       
 
 Now we are ready to install the chart.  
 
 Execute the following command where nginx-release is release name and nginx-chart is the chart name. It installs nginx-chart in the default namespace  
-```
+```shell
 helm install frontend nginx-chart
 ```
+
 You will see the output as shown below.
 ```
 NAME: frontend
@@ -290,32 +301,37 @@ STATUS: deployed
 REVISION: 1
 TEST SUITE: None
 ```
+
 Now you can check the release list using this command:
-```
+```shell
 helm list
 ```
+
 Run the kubectl commands to check the deployment, services, and pods.
-```
+```shell
 kubectl get deployment
 kubectl get services
 kubectl get configmap
 kubectl get pods
 ```
+
 We discussed how a single helm chart can be used for multiple environments using different values.yaml files. To install a helm chart with external values.yaml file, you can use the following command with the --values flag and path of the values file.
-```
+```shell
 helm install frontend nginx-chart --values env/prod-values.yaml
 ```
 
 ## Helm Upgrade & Rollback
-Now suppose you want to modify the chart and install the updated version, we can use the below command:
+Now suppose you want to modify the chart and install the updated version, we can use the below command: 
 ```
 helm upgrade frontend nginx-chart
 ```
-Now if we want to roll back the changes which we have just done and deploy the previous one again, we can use the rollback command to do that.  
+
+Now if we want to roll back the changes which we have just done and deploy the previous one again, we can use the rollback command to do that.   
 ```
 helm rollback frontend
 ```
-If we want to roll back to the specific version we can put the revision number like this.
+
+If we want to roll back to the specific version we can put the revision number like this.  
 ```
 helm rollback <release-name> <revision-number>
 ```
@@ -325,13 +341,14 @@ To uninstall the helm release use uninstall command. It will remove all of the r
 ```
 helm uninstall frontend
 ```
-We can package the chart and deploy it to Github, S3, or any other platform.
+
+We can package the chart and deploy it to Github, S3, or any other platform.  
 ```
 helm package frontend
 ```
 
 ## Debugging Helm Charts
-We can use the following commands to debug the helm charts and templates.  
+We can use the following commands to debug the helm charts and templates.   
 
 1. helm lint: This command takes a path to a chart and runs a series of tests to verify that the chart is well-formed.
 2. helm get values: This command will output the release values installed to the cluster.
@@ -339,7 +356,7 @@ We can use the following commands to debug the helm charts and templates.
 4. helm get manifest: This command will output the manifests that are running in the cluster.
 5. helm diff: It will output the differences between the two revisions.
 
-```
+```shell
 helm diff revision nginx-chart 1 2
 ```
 
@@ -347,13 +364,15 @@ helm diff revision nginx-chart 1 2
 If you try to install an existing helm package, you will get the following error.  
 ```
 Error: INSTALLATION FAILED: cannot re-use a name that is still in use
-```
+``` 
+
 To update or upgrade the release, you need to run the upgrade command.  
 
 If you try to install a chart from a different location without giving the absolute path of the chart you will get the following error.  
 ```
 Error: non-absolute URLs should be in form of repo_name/path_to_chart
 ```
+
 To rectify this, you should execute the helm command from the directory where you have the chart or provide the absolute path or relative path of the chart directory.
 
 ## Helm Charts Best Practices
