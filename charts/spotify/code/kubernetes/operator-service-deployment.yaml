@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: operator-service-deployment
+  labels:
+    app: operator-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: operator-service
+  template:
+    metadata:
+      labels:
+        app: operator-service
+    spec:
+      containers:
+      - name: operator-service
+        image: localhost:5000/dethrone-operator:latest
+        ports:
+        - containerPort: 3002
+        env:
+        - name: PORT
+          value: "3002"
+        - name: SONG_SERVICE_API_URL
+          value: "http://song-service:3001" # Update the URL to the service name and port of the deployed song-service
+        - name: JWT_SECRET_KEY
+          value: "okxUuOsWwtZaBf7ZCdojxC79OfddgXEMwDUSWgVNuNi2OsdpRSxZOxymS04hsKVG"

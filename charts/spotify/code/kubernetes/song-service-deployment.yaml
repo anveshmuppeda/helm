@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: song-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: song-service
+  template:
+    metadata:
+      labels:
+        app: song-service
+    spec:
+      containers:
+      - name: song-service
+        image: localhost:5000/dethrone-song:latest
+        ports:
+        - containerPort: 3001
+        env:
+        - name: PORT
+          value: "3001"
+        - name: DB_CONNECTION_URL
+          value: "mongodb://mongodb/song-service"
+        - name: SROUNDS
+          value: "10"
+        - name: JWT_SECRET_KEY
+          value: "okxUuOsWwtZaBf7ZCdojxC79OfddgXEMwDUSWgVNuNi2OsdpRSxZOxymS04hsKVG"

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: media-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: media-service
+  template:
+    metadata:
+      labels:
+        app: media-service
+    spec:
+      containers:
+      - name: media-service
+        image: localhost:5000/dethrone-media:latest
+        ports:
+        - containerPort: 3005
+        env:
+        - name: PORT
+          value: "3005"
+        - name: DB_CONNECTION_URL
+          value: "mongodb://mongodb/media"
+        - name: JWT_SECRET_KEY
+          value: "okxUuOsWwtZaBf7ZCdojxC79OfddgXEMwDUSWgVNuNi2OsdpRSxZOxymS04hsKVG"

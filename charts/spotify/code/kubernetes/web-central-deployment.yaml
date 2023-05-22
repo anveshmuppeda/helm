@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-central
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-central
+  template:
+    metadata:
+      labels:
+        app: web-central
+    spec:
+      containers:
+        - name: web-central
+          image: localhost:5000/dethrone-web:latest
+          ports:
+            - containerPort: 3004
+          env:
+            - name: AUTH_SERVICE_API_URL
+              value: "http://auth-service:3000"
+            - name: OPERATOR_SERVICE_API_URL
+              value: "http://operator-service:3002"
+            - name: MEDIA_SERVICE_API_URL
+              value: "http://media-service:3005"
+            - name: LOGIN_END_POINT
+              value: "/login"
+            - name: SESSION_SECRET
+              value: "2b34d40d0534ec483c7ee39ac6f9b77c6a02cdcdda739994112f83c6b50a5676"
+            - name: PORT
+              value: "3004"
+            - name: JWT_SECRET_KEY
+              value: "okxUuOsWwtZaBf7ZCdojxC79OfddgXEMwDUSWgVNuNi2OsdpRSxZOxymS04hsKVG"

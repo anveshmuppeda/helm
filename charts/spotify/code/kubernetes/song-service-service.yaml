@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: song-service
+spec:
+  selector:
+    app: song-service
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001
+  type: LoadBalancer
