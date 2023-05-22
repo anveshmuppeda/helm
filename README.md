@@ -12,7 +12,7 @@ For the purpose of explanation, I am choosing a very basic example of a website 
 
 Helm Chart Structure
 To understand the Helm chart, let’s take an example of Nginx deployment. To deploy Nginx on Kubernetes, typically you would have the following YAML files.
-```
+```yaml
 nginx-deployment
     ├── configmap.yaml
     ├── deployment.yaml
@@ -20,7 +20,7 @@ nginx-deployment
     └── service.yaml
 ```
 Now if we create a Helm Chart for the above Nginx deployment, it will have the following directory structure.
-```
+```yaml
 nginx-chart/
 |-- Chart.yaml
 |-- charts
@@ -78,7 +78,7 @@ We’ll edit the files one by one according to our deployment requirements.
 Chart.yaml
 ```
 As mentioned above, we put the details of our chart in Chart.yaml file. Replace the default contents of chart.yaml with the following.
-```
+```yaml
 apiVersion: v2
 name: nginx-chart
 description: My First Helm Chart
@@ -107,7 +107,7 @@ rm -rf templates/*
 We will add our Nginx YAML files and change them to the template for better understanding.  
 
 Create a deployment.yaml file and copy the following contents.  
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -155,7 +155,7 @@ First, you need to figure out what values could change or what you want to templ
 Similarly, you can templatize the required values in the YAML file.  
 
 Here is our final deployment.yaml file after applying the templates. The templated part is highlighted in bold. Replace the deployment file contents with the following.
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -182,7 +182,7 @@ spec:
               protocol: TCP
 ```
 Create service.yaml file and copy the following contents.
-```
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -199,7 +199,7 @@ spec:
 In the protocol template directive, you can see a pipe ( | ) . It is used to define the default value of the protocol as TCP. So that means we won’t define the protocol value in values.yaml file or if it is empty, it will take TCP as a value for protocol.  
 
 Create a configmap.yaml and add the following contents to it. Here we are replacing the default Nginx index.html page with a custom HTML page. Also, we added a template directive to replace the environment name in HTML.  
-```
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -217,7 +217,7 @@ data:
 The values.yaml file contains all the values that need to be substituted in the template directives we used in the templates. For example, deployment.yaml template contains template directive to get the image repository, tag, and pullPolicy from the values.yaml file. If you check the following values.yaml file, we have repository, tag, and pullPolicy key-value pairs nested under the image key. That is the reason we used Values.image.repository  
 
 Now, replace the default values.yaml content with the following.  
-```
+```yaml
 replicaCount: 2
 
 image:
@@ -235,7 +235,7 @@ env:
   name: dev
 ```
 Now we have the Nginx helm chart ready and the final helm chart structure looks like the following.
-```
+```yaml
 nginx-chart
 ├── Chart.yaml
 ├── charts
