@@ -212,5 +212,159 @@ data:
     <h1>Welcome</h1>
     </br>
     <h1>Hi! I got deployed in {{ .Values.env.name }} Environment using Helm Chart </h1>
-    </html
+    </html>
 ```
+## values.yaml
+The values.yaml file contains all the values that need to be substituted in the template directives we used in the templates. For example, deployment.yaml template contains template directive to get the image repository, tag, and pullPolicy from the values.yaml file. If you check the following values.yaml file, we have repository, tag, and pullPolicy key-value pairs nested under the image key. That is the reason we used Values.image.repository  
+
+Now, replace the default values.yaml content with the following.  
+```
+replicaCount: 2
+
+image:
+  repository: nginx
+  tag: "1.16.0"
+  pullPolicy: IfNotPresent
+
+service:
+  name: nginx-service
+  type: ClusterIP
+  port: 80
+  targetPort: 9000
+
+env:
+  name: dev
+```
+Now we have the Nginx helm chart ready and the final helm chart structure looks like the following.
+```
+nginx-chart
+├── Chart.yaml
+├── charts
+├── templates
+│   ├── configmap.yaml
+│   ├── deployment.yaml
+│   └── service.yaml
+└── values.yaml
+```
+
+## Validate the Helm Chart
+Now to make sure that our chart is valid and, all the indentations are fine, we can run the below command. Ensure you are inside the chart directory.  
+```
+helm lint .
+```
+If you are executing it from outside the nginx-chart directory, provide the full path of nginx-chart  
+```
+helm lint /path/to/nginx-chart
+```
+If there will be no error or issue, it will show this result
+```
+==> Linting ./nginx
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+```
+To validate if the values are getting substituted in the templates, you can render the templated YAML files with the values using the following command. It will generate and display all the manifest files with the substituted values.
+```
+helm template .
+```
+We can also use --dry-run command to check. This will pretend to install the chart to the cluster and if there will be some issue it will show the error.  
+```
+helm install --dry-run my-release nginx-chart
+```
+If everything is good, then you will see the manifest output that would get deployed into the cluster.   
+
+## Deploy the Helm Chart
+When you deploy the chart, Helm will read the chart and configuration values from the values.yaml file and generates the manifest files. Then it will send these files to the Kubernetes API server, and Kubernetes will create the requested resources in the cluster.   
+
+Now we are ready to install the chart.  
+
+Execute the following command where nginx-release is release name and nginx-chart is the chart name. It installs nginx-chart in the default namespace  
+```
+helm install frontend nginx-chart
+```
+You will see the output as shown below.
+```
+NAME: frontend
+LAST DEPLOYED: Tue Dec 13 10:15:56 2022
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+```
+Now you can check the release list using this command:
+```
+helm list
+```
+Run the kubectl commands to check the deployment, services, and pods.
+```
+kubectl get deployment
+kubectl get services
+kubectl get configmap
+kubectl get pods
+```
+We discussed how a single helm chart can be used for multiple environments using different values.yaml files. To install a helm chart with external values.yaml file, you can use the following command with the --values flag and path of the values file.
+```
+helm install frontend nginx-chart --values env/prod-values.yaml
+```
+
+## Helm Upgrade & Rollback
+Now suppose you want to modify the chart and install the updated version, we can use the below command:
+```
+helm upgrade frontend nginx-chart
+```
+Now if we want to roll back the changes which we have just done and deploy the previous one again, we can use the rollback command to do that.  
+```
+helm rollback frontend
+```
+If we want to roll back to the specific version we can put the revision number like this.
+```
+helm rollback <release-name> <revision-number>
+```
+
+## Uninstall The Helm Release
+To uninstall the helm release use uninstall command. It will remove all of the resources associated with the last release of the chart.  
+```
+helm uninstall frontend
+```
+We can package the chart and deploy it to Github, S3, or any other platform.
+```
+helm package frontend
+```
+
+## Debugging Helm Charts
+We can use the following commands to debug the helm charts and templates.  
+
+1. helm lint: This command takes a path to a chart and runs a series of tests to verify that the chart is well-formed.
+2. helm get values: This command will output the release values installed to the cluster.
+3. helm install --dry-run: Using this function we can check all the resource manifests and ensure that all the templated are working fine.
+4. helm get manifest: This command will output the manifests that are running in the cluster.
+5. helm diff: It will output the differences between the two revisions.
+
+```
+helm diff revision nginx-chart 1 2
+```
+
+## Helm Chart Possible Errors
+If you try to install an existing helm package, you will get the following error.  
+```
+Error: INSTALLATION FAILED: cannot re-use a name that is still in use
+```
+To update or upgrade the release, you need to run the upgrade command.  
+
+If you try to install a chart from a different location without giving the absolute path of the chart you will get the following error.  
+```
+Error: non-absolute URLs should be in form of repo_name/path_to_chart
+```
+To rectify this, you should execute the helm command from the directory where you have the chart or provide the absolute path or relative path of the chart directory.
+
+## Helm Charts Best Practices
+Following are some of the best practices to be followed when developing a helm chart. 
+
+1. Document your chart by adding comments and a README file as documentation is essential for ensuring maintainable Helm charts.
+2. We should name the Kubernetes manifest files after the Kind of object i.e deployment, service, secret, ingress, etc.
+3. Put the chart name in lowercase only and if it has more than a word then separate out with hyphens (-)
+4. In values.yaml file field name should be in lowercase.
+5. Always wrap the string values between quote signs.
+6. Use Helm version 3 for simpler and more secure releases. Check this document for more details
+
+[Reference](https://devopscube.com/create-helm-chart/)
