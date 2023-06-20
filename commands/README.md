@@ -11,7 +11,7 @@ helm repo remove bitnami
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
 
-Search the repository:
+## Search the repository:
 
 helm search repo mysql
 
@@ -19,8 +19,12 @@ helm search repo database
 
 helm search repo database --versions
 
-
-Install a package:
+## get  
+```
+helm get <option> my-chart
+  options: values, notes
+```
+## Install a package:
 
 kubectl get pods
 
