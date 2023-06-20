@@ -22,7 +22,10 @@ helm search repo database --versions
 ## get  
 ```
 helm get <option> my-chart
-  options: values, notes
+  options: 
+  1. values
+  2. notes
+  3. manifest
 ```
 ## Install a package:
 
