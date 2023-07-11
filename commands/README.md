@@ -7,13 +7,13 @@ helm repo remove bitnami
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
-## Search the repository:
+## to Search the repository:
 ```
 helm search repo mysql
 helm search repo database --versions
 ```
 
-## get  
+## get command  
 ```
 helm get <option> my-chart
   options: 
@@ -21,66 +21,68 @@ helm get <option> my-chart
   2. notes
   3. manifest
 ```
-## Install a package:
+## to install a package:
 ```
 helm install mydb bitnami/mysql
 ```
-## To check the installation status:
+## to check the installation status:
 ```
 helm status mydb
 ```
-## To Upgrade:
+## to Upgrade:
 ```
-ROOT_PASSWORD=$(kubectl get secret --namespace default mydb-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode)
-
-helm upgrade --namespace default mysql-release bitnami/mysql --set auth.rootPassword=$ROOT_PASSWORD
+ROOT_PASSWORD=$(kubectl get secret --namespace default mydb-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode)  
+helm upgrade --namespace default mysql-release bitnami/mysql --set auth.rootPassword=$ROOT_PASSWORD  
 ```
 
-## Uninstall chart
+## uninstall chart
 ```
 helm uninstall <release-name>
 ```
-## To list the release names 
+## to list the release names 
 ```
 helm list -a
 helm list -a -n anvesh
 ```
-List the repos
+### List the repos  
+```
 $helm repo list [flags]
+```
 
-
-To add new repo into your helm
+### to add new repo to your helm  
+```
 $helm repo add bitnami https://charts.bitnami.com/bitnami
 $helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-
-to list repos in your helm
+```
+### to list repos in your helm  
+```
 $ helm repo list
-
+```
 ### to update the current repos in your helm  
 ```
 $helm repo update
 ```
 
-### To search any chart within the repo
+### to search any chart within the repo
 ```
 $helm search repo bitnami/rabbitmq -l  
 $helm search repo prometheus-community -l  
 ```
-### To install any release using existing charts  
+### to install any release using existing charts  
 ```
 $helm install <release-name> <chart-name> -n <namespace>  
 ```
-### To create a own helm chart  
+### to create a own helm chart  
 ```
 $helm create <chart-name>  
 $helm create jenkins-chart  
 ```
-### To create your own release from your own chat 
+### to create your own release from your own chat 
 ```
 $helm install <release-name> <chart-name>  
 $helm install jenkins-release jenkins-chart  
 ```
-### To upgrade an existing release:  
+### to upgrade an existing release:  
 ```
 helm upgrade <release-name> <chart-name> --set replicaCount=3 -n anvesh
 ```
