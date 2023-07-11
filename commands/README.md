@@ -1,4 +1,4 @@
-#Helm Commands  
+# Helm Commands  
 ```
 helm repo list
 helm repo add bitnami https://charts.bitnami.com/bitnami
