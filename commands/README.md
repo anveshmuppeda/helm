@@ -6,13 +6,30 @@ helm repo list
 helm repo remove bitnami
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
-
-## to Search the repository:
+## to list the release names 
 ```
-helm search repo mysql
-helm search repo database --versions
+helm list -a
+helm list -a
+ -a = show all releases without any filter applied
+ -A = list releases across all namespaces
 ```
 
+## search the repository:
+```
+# Search for stable release versions matching the keyword "nginx"
+$ helm search repo nginx
+
+# Search for release versions matching the keyword "nginx", including pre-release versions
+$ helm search repo nginx --devel
+
+# Search for the latest stable release for nginx-ingress with a major version of 1
+$ helm search repo nginx-ingress --version ^1.0.0
+```
+## helm search hub  
+search for charts in the Artifact Hub or your own hub instance  
+```
+helm search hub [KEYWORD] [flags]  
+```
 ## get command  
 ```
 helm get <option> my-chart
@@ -39,11 +56,7 @@ helm upgrade --namespace default mysql-release bitnami/mysql --set auth.rootPass
 ```
 helm uninstall <release-name>
 ```
-## to list the release names 
-```
-helm list -a
-helm list -a -n anvesh
-```
+
 ### List the repos  
 ```
 $helm repo list [flags]
@@ -92,4 +105,15 @@ helm upgrade <release-name> <chart-name> --set replicaCount=3 -n anvesh
 $helm template RELEASENAME .
 individual template 
 $helm template RELEASENAME . -s templates/jenkins-deployment.yaml
+```
+### helm show   
+show the chart's definition   
+show all information of the chart  
+```
+helm show all [CHART] [flags]  
+```
+### to show the chart's definition
+This command inspects a chart (directory, file, or URL) and displays the contents of the Chart.yaml file
+```
+helm show chart [CHART] [flags]  
 ```
