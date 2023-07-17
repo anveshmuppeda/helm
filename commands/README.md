@@ -6,7 +6,7 @@ helm repo list
 helm repo remove bitnami
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
-## to list the release names 
+### to list the release names 
 ```
 helm list -a
 helm list -a
@@ -14,7 +14,7 @@ helm list -a
  -A = list releases across all namespaces
 ```
 
-## search the repository:
+### search the repository:
 ```
 # Search for stable release versions matching the keyword "nginx"
 $ helm search repo nginx
@@ -25,12 +25,12 @@ $ helm search repo nginx --devel
 # Search for the latest stable release for nginx-ingress with a major version of 1
 $ helm search repo nginx-ingress --version ^1.0.0
 ```
-## helm search hub  
+### helm search hub  
 search for charts in the Artifact Hub or your own hub instance  
 ```
 helm search hub [KEYWORD] [flags]  
 ```
-## get command  
+### get command  
 ```
 helm get <option> my-chart
   options: 
@@ -38,15 +38,35 @@ helm get <option> my-chart
   2. notes
   3. manifest
 ```
-## to install a package:
+---
+## Install
+### to install a package:
 ```
 helm install mydb bitnami/mysql
 ```
-## to check the installation status:
+### to check the installation status:
 ```
 helm status mydb
 ```
-## to Upgrade:
+### to install any release using existing charts  
+```
+$helm install <release-name> <chart-name> -n <namespace>  
+```
+### to create a own helm chart  
+```
+$helm create <chart-name>  
+$helm create jenkins-chart  
+```
+### to create your own release from your own chat 
+```
+$helm install <release-name> <chart-name>  
+$helm install jenkins-release jenkins-chart  
+```
+### to upgrade an existing release:  
+```
+helm upgrade <release-name> <chart-name> --set replicaCount=3 -n anvesh
+```  
+### to Upgrade:
 ```
 ROOT_PASSWORD=$(kubectl get secret --namespace default mydb-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode)  
 helm upgrade --namespace default mysql-release bitnami/mysql --set auth.rootPassword=$ROOT_PASSWORD  
@@ -80,24 +100,6 @@ $helm repo update
 ```
 $helm search repo bitnami/rabbitmq -l  
 $helm search repo prometheus-community -l  
-```
-### to install any release using existing charts  
-```
-$helm install <release-name> <chart-name> -n <namespace>  
-```
-### to create a own helm chart  
-```
-$helm create <chart-name>  
-$helm create jenkins-chart  
-```
-### to create your own release from your own chat 
-```
-$helm install <release-name> <chart-name>  
-$helm install jenkins-release jenkins-chart  
-```
-### to upgrade an existing release:  
-```
-helm upgrade <release-name> <chart-name> --set replicaCount=3 -n anvesh
 ```
 
 ### To view the template syntax after applying templates to the deployment files  
