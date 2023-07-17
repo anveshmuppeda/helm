@@ -71,11 +71,13 @@ helm upgrade <release-name> <chart-name> --set replicaCount=3 -n anvesh
 ROOT_PASSWORD=$(kubectl get secret --namespace default mydb-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode)  
 helm upgrade --namespace default mysql-release bitnami/mysql --set auth.rootPassword=$ROOT_PASSWORD  
 ```
-
-## uninstall chart
+---
+## Unistall  
+### uninstall chart
 ```
 helm uninstall <release-name>
 ```
+---
 
 ### List the repos  
 ```
