@@ -1,0 +1,14 @@
+favorite:
+  drink: coffee
+  food: pizza
+pizzaToppings:
+  - mushrooms
+  - cheese
+  - peppers
+  - onions
+
+crm-generic3:
+  dessert: ice cream
+
+global:
+  salad: caesar
