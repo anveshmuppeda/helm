@@ -9,7 +9,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 ### to list the release names 
 ```
 helm list -a
-helm list -a
+helm list -A
  -a = show all releases without any filter applied
  -A = list releases across all namespaces
 ```
