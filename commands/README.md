@@ -32,7 +32,7 @@ helm search hub [KEYWORD] [flags]
 ```
 ### get command  
 ```
-helm get <option> my-chart
+helm get <option> my-chart -n <namespace>
   options: 
   1. values
   2. notes
