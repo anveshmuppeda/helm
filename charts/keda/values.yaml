@@ -1,0 +1,11 @@
+# Default values for keda.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+version: 2.8.0
+image:
+  keda:
+    name: 655556663327.dkr.ecr.us-east-1.amazonaws.com/selenium-keda
+    imageVersion: 2.8.0
+  kedaMetrics:
+    name: 655556663327.dkr.ecr.us-east-1.amazonaws.com/selenium-keda-metrics-apiserver
+    imageVersion: 2.8.0

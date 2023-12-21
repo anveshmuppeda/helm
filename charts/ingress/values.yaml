@@ -1,0 +1,8 @@
+# Default values for ingress.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+ingressClass:
+  name: selenium-grid-ingress-class
+seleniumHub:
+  serviceName: selenium-grid-hub-svc
