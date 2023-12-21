@@ -15,31 +15,30 @@ spec:
       labels:
         app: {{ .Release.Name }}-node-firefox
     spec:
-      terminationGracePeriodSeconds: {{ .Values.deployment.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: 3600
       volumes:
       - name: dshm
         emptyDir:
           medium: Memory
       containers:
-      - name: {{ .Release.Name }}-node-firefox
-        image: "{{ .Values.image.repositoryfirefox }}:{{ .Values.image.tagfirefox }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+      - name: selenium-node-firefox
+        image: selenium/node-firefox:4.16
         ports:
-          - containerPort: {{ .Values.container.ports.containerPort }}
+          - containerPort: 5555
         volumeMounts:
           - mountPath: /dev/shm
             name: dshm
         env:
-          - name: {{ .Values.env.name1 }}
-            value: {{ .Values.env.value1 }}
-          - name: {{ .Values.env.name2 }}
-            value: {{ .Values.env.value2 }}
-          - name: {{ .Values.env.name3 }}
-            value: {{ .Values.env.value3 }}
+          - name: SE_EVENT_BUS_HOST
+            value: {{ .Release.Name }}-hub-svc
+          - name: SE_EVENT_BUS_SUBSCRIBE_PORT
+            value: "4443"
+          - name: SE_EVENT_BUS_PUBLISH_PORT
+            value: "4442"
         resources:
           limits:
-            memory: "{{ .Values.resources.memory }}"
-            cpu: "{{ .Values.resources.cpu }}"
+            memory: "1000Mi"
+            cpu: ".5"
         lifecycle:
           preStop:
             exec:

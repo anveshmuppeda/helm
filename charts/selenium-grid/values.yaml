@@ -18,19 +18,19 @@ resources:
   limits:
     memory: "200Mi"
     cpu: ".8"
-env:
-  name1: "SE_EVENT_BUS_HOST"
-  value1: "selenium-hub-svc"
-  name2: "SE_EVENT_BUS_SUBSCRIBE_PORT"
-  value2: "4443"
-  name3: "SE_EVENT_BUS_PUBLISH_PORT"
-  value3: "4442"
+# env:
+#   name1: "SE_EVENT_BUS_HOST"
+#   value1: "selenium-hub-svc"
+#   name2: "SE_EVENT_BUS_SUBSCRIBE_PORT"
+#   value2: "4443"
+#   name3: "SE_EVENT_BUS_PUBLISH_PORT"
+#   value3: "4442"
 triggers:
   type: selenium-grid
   metadata:
     browserName1: chrome
     browserName2: firefox
-    url: http://a5146ad8e928246d39b84974a7d077d1-64969741.us-east-2.elb.amazonaws.com:4444/graphql #ALB URL
+    url: http://aafb4eda8aadf46068cb358deebc059c-199703806.us-east-1.elb.amazonaws.com:4444/graphql #ALB URL
 
 minReplicaCount: 1
 maxReplicaCount: 10
