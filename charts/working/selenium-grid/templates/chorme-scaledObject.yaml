@@ -1,0 +1,18 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ .Release.Name }}-chrome-scaledobject
+  namespace: selenium
+  labels:
+    deploymentName: {{ .Release.Name }}-node-chrome
+spec:
+  minReplicaCount: {{ .Values.minReplicaCount }}
+  maxReplicaCount: {{ .Values.maxReplicaCount }}
+  scaleTargetRef:
+    name: {{ .Release.Name }}-node-chrome
+    envSourceContainerName: selenium-node-chrome
+  triggers:
+    - type: "{{ .Values.triggers.type }}"
+      metadata:
+        url: '{{ .Values.triggers.metadata.url }}'  #this is {{ .Release.Name }} grid URL, external IP of Loadbalancer
+        browserName: '{{ .Values.triggers.metadata.browserName1 }}'
