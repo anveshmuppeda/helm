@@ -2,11 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 image:
-  repository: 655556663327.dkr.ecr.us-east-1.amazonaws.com/selenium-node-chrome
+  repository: selenium/node-chrome
   tag: "4.16"
-  repositoryhub: 655556663327.dkr.ecr.us-east-1.amazonaws.com/selenium-hub
+  repositoryhub: selenium/hub
   taghub: "4.16"
-  repositoryfirefox: 655556663327.dkr.ecr.us-east-1.amazonaws.com/selenium-node-firefox
+  repositoryfirefox: selenium/node-firefox
   tagfirefox: "4.16"
   pullPolicy: IfNotPresent
 resources:

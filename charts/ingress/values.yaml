@@ -5,4 +5,4 @@
 ingressClass:
   name: selenium-grid-ingress-class
 seleniumHub:
-  serviceName: selenium-grid-hub-svc
+  serviceName: selenium-hub-svc
