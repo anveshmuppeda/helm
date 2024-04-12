@@ -62,6 +62,8 @@ $helm create jenkins-chart
 $helm install <release-name> <chart-name>  
 $helm install jenkins-release jenkins-chart  
 ```
+---
+## Upgrade  
 ### to upgrade an existing release:  
 ```
 helm upgrade <release-name> <chart-name> --set replicaCount=3 -n anvesh
@@ -71,13 +73,15 @@ helm upgrade <release-name> <chart-name> --set replicaCount=3 -n anvesh
 ROOT_PASSWORD=$(kubectl get secret --namespace default mydb-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode)  
 helm upgrade --namespace default mysql-release bitnami/mysql --set auth.rootPassword=$ROOT_PASSWORD  
 ```
----
+
+---  
 ## Unistall  
 ### uninstall chart
 ```
 helm uninstall <release-name>
 ```
----
+---  
+## List 
 
 ### List the repos  
 ```
@@ -96,8 +100,8 @@ $ helm repo list
 ### to update the current repos in your helm  
 ```
 $helm repo update
-```
-
+```  
+--- 
 ### to search any chart within the repo
 ```
 $helm search repo bitnami/rabbitmq -l  
@@ -117,7 +121,15 @@ show all information of the chart
 helm show all [CHART] [flags]  
 ```
 ### to show the chart's definition
-This command inspects a chart (directory, file, or URL) and displays the contents of the Chart.yaml file
+This command inspects a chart (directory, file, or URL) and displays the contents of the Chart.yaml file  
+
 ```
 helm show chart [CHART] [flags]  
+```
+
+## Download  
+### To download the chart or pull the chart 
+```bash
+helm pull <chart-name> --version <version> --untar  
+helm pull vmware-tanzu/velero --version 5.0.2 --untar  
 ```
