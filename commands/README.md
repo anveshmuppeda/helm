@@ -38,6 +38,12 @@ helm get <option> my-chart -n <namespace>
   2. notes
   3. manifest
 ```
+
+#### Example :  
+```
+helm get manifest <release-name>
+helm get manifest <chart-name>  
+```
 ---
 ## Install
 ### to install a package:
