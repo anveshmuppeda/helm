@@ -41,8 +41,7 @@ helm get <option> my-chart -n <namespace>
 
 #### Example :  
 ```
-helm get manifest <release-name>
-helm get manifest <chart-name>  
+helm get manifest <release-name>  
 ```
 ---
 ## Install
